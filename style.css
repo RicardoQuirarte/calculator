@@ -1,3 +1,63 @@
 body {
-    background-color: black;
+    background-color: rgb(120, 144, 156);
+}
+
+.but {
+    border: 1.5px solid rgb(26, 35, 126);
+    font-size: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    font-weight: 200;
+}
+
+#calculator {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    width: 450px;
+    height: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 200px;
+    color: rgb(255, 235, 238);
+
+}
+
+#screen {
+    grid-column: 1/5;
+    color: rgb(255, 138, 101);
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    padding-right: 25px;
+    background-color: rgb(250, 250, 250); 
+    font-weight: 700;
+    border: 2px solid rgb(26, 35, 126);
+}
+
+#equal {
+    grid-column: 1/5;
+    background-color: rgb(200, 230, 201);
+    color: black;
+    text-shadow: 1px 1px white;
+}
+
+#plus, #minus, #x, #divide {
+    background-color: rgb(191, 87, 97);
+    text-shadow: 1px 1px black;
+}
+
+#cero, #one, #two, #three, #four, #five, #six, #seven, #eight, #nine {
+    background-color: rgb(174, 214, 241);
+    text-shadow: 1px 1px black;
+}
+
+#dot, #back {
+    background-color: rgb(176, 190, 197);
+    text-shadow: 1px 1px black;
+}
+
+.disable {
+    pointer-events: none;
 }
