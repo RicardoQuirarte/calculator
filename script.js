@@ -1,33 +1,3 @@
-function add(displayValue) {
-    let value = displayValue;
-    displayValue = "";
-};
-
-
-function subtract(a, b) {
-	return a - b;
-};
-
-function multiply(a, b) {
-    return a * b;
-  };
-
-function divideNum(a, b) {
-    return a / b;
-};
-
-function operate(value, displayValue) {
-    sum(a, b);
-    
-
-
-    const result = document.createElement('div');
-    result.textContent = sum;
-    screen.appendChild(result);
-};
-
-
-
 const screen = document.querySelector('#screen');
 const seven = document.querySelector('#seven');
 const eight = document.querySelector('#eight');
@@ -38,11 +8,42 @@ const five = document.querySelector('#five');
 const six = document.querySelector('#six');
 const minus = document.querySelector('#minus');
 
+cero.addEventListener('click', showNumber);
+one.addEventListener('click', showNumber);
+two.addEventListener('click', showNumber);
+three.addEventListener('click', showNumber);
+four.addEventListener('click', showNumber);
+five.addEventListener('click', showNumber);
+six.addEventListener('click', showNumber);
+seven.addEventListener('click', showNumber);
+eight.addEventListener('click', showNumber);
+nine.addEventListener('click', showNumber);
+back.addEventListener('click', backFunction);
+dot.addEventListener('click', dotDisable);
+
 let displayValue = '';
+let operator = '';
+let clickOnce = 0;
+let previousKey= '';
+
+function calculate(n1, operator, n2) {
+let result = '';
+    if (operator === 'sum') {
+        result = n1 + n2;
+    } else if (operator === 'subtract') {
+        result = n1 - n2;
+    } else if (operator == 'multiply') {
+        result = n1 * n2;
+    } else if (operator == 'divide') {
+        result = n1 / n2;
+    }
+    return result;
+};
 
 function showNumber(e) {
     displayValue = displayValue + `${e.target.innerText}`;
     screen.textContent = displayValue;
+    previousKey = 'number';
     console.log(displayValue)
 };
 
@@ -52,7 +53,7 @@ function backFunction() {
 }
 
 function dotDisable(e) {
-    if (displayValue.indexOf('.') > -1) {
+    if (displayValue.includes('.')) {
         dot.classList.add('disable');
         return
      }
@@ -73,106 +74,96 @@ addEventListener('keydown', (e) => {
     showKeyNumber(e);
 });
 
-cero.addEventListener('click', showNumber);
-one.addEventListener('click', showNumber);
-two.addEventListener('click', showNumber);
-three.addEventListener('click', showNumber);
-four.addEventListener('click', showNumber);
-five.addEventListener('click', showNumber);
-six.addEventListener('click', showNumber);
-seven.addEventListener('click', showNumber);
-eight.addEventListener('click', showNumber);
-nine.addEventListener('click', showNumber);
-back.addEventListener('click', backFunction);
-dot.addEventListener('click', dotDisable);
 
-let clickOnce = 0;
-let clickSum = 0;
-let clickRest = 0;
-let clickMultiply = 0;
-let clickDivide = 0;
 
-plus.addEventListener('click', () => {
-    sum++
+
+divide.addEventListener('click', () => {
+    if (previousKey == 'operator' || previousKey == 'equal') {
+        operator = 'divide';
+        return
+    }
     clickOnce++
     if (clickOnce == 1) {
-        value = parseInt(displayValue);
-        displayValue = '';
-    }
-        else if (clickOnce > 1) {
-            secondValue = parseInt(displayValue);
-            value = value + secondValue;
+        value = parseFloat(displayValue);
+        operator = 'divide';
+    } else if (clickOnce > 1) {
+            secondValue = parseFloat(displayValue);
+            value = calculate(value, operator, secondValue);
             screen.textContent = value;
-            ;
+            operator = 'divide';
         }
     displayValue = '';
+    previousKey = 'operator'
 });
 
-
-minus.addEventListener('click', () => {
-    rest++
+multiply.addEventListener('click', () => {
+    if (previousKey == 'operator' || previousKey == 'equal') {
+        operator = 'multiply';
+        return
+    }
     clickOnce++
     if (clickOnce == 1) {
-        value = parseInt(displayValue);
-        displayValue = '';
-    }
-        else if (clickOnce > 1) {
-            secondValue = parseInt(displayValue);
-            value = value - secondValue;
+        value = parseFloat(displayValue);
+        operator = 'multiply';
+    } else if (clickOnce > 1) {
+            secondValue = parseFloat(displayValue);
+            value = calculate(value, operator, secondValue);
             screen.textContent = value;
-            ;
+            operator = 'multiply';
         }
     displayValue = '';
+    previousKey = 'operator'
+});
+
+subtract.addEventListener('click', () => {
+    if (previousKey == 'operator' || previousKey == 'equal') {
+        operator = 'subtract';
+        return
+    }
+    clickOnce++
+    if (clickOnce == 1) {
+        value = parseFloat(displayValue);
+        operator = 'subtract';
+    } else if (clickOnce > 1) {
+            secondValue = parseFloat(displayValue);
+            value = calculate(value, operator, secondValue);
+            screen.textContent = value;
+            operator = 'subtract';
+        }
+    displayValue = '';
+    previousKey = 'operator'
+});
+
+sum.addEventListener('click', () => {
+    if (previousKey == 'operator' || previousKey == 'equal') {
+        operator = 'sum';
+        return
+    }
+    clickOnce++
+    if (clickOnce == 1) {
+        value = parseFloat(displayValue);
+        operator = 'sum';
+    } else if (clickOnce > 1) {
+            secondValue = parseFloat(displayValue);
+            value = calculate(value, operator, secondValue);
+            screen.textContent = value;
+            operator = 'sum';
+        }
+    displayValue = '';
+    previousKey = 'operator'
 });
 
 equal.addEventListener('click', () => {
-    secondValue = parseInt(displayValue);
-    if (clickSum > 0) {
-        value = value + secondValue;
-    };
-    if (clickRest > 0) {
-        value = value - secondValue;
-    };
-    if (clickMultiply > 0) {
-        value = value * secondValue;
-    };
-    if (clickDivide > 0) {
-        value = value / secondValue;
-    };
+    secondValue = parseFloat(displayValue);
+    value = calculate(value, operator, secondValue);
     screen.textContent = value;
-    displayValue = 0;
+    displayValue = '';
+    previousKey = 'equal';
 });
 
-
-
-x.addEventListener('click', () => {
-    clickMultiply++
-    clickOnce++
-    if (clickOnce == 1) {
-        value = parseInt(displayValue);
-        displayValue = '';
-    }
-        else if (clickOnce > 1) {
-            secondValue = parseInt(displayValue);
-            value = value * secondValue;
-            screen.textContent = value;
-            ;
-        }
-    displayValue = '';
-});
-
-divide.addEventListener('click', () => {
-    clickDivide++
-    clickOnce++
-    if (clickOnce == 1) {
-        value = parseInt(displayValue);
-        displayValue = '';
-    }
-        else if (clickOnce > 1) {
-            secondValue = parseInt(displayValue);
-            value = value / secondValue;
-            screen.textContent = value;
-            ;
-        }
-    displayValue = '';
+clear.addEventListener('click', () => {
+    displayValue= '';
+    value= 0;
+    secondValue= 0;
+    screen.textContent = 0;
 });

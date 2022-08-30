@@ -3,7 +3,7 @@ body {
 }
 
 .but {
-    border: 1.5px solid rgb(26, 35, 126);
+    border: 1.8px solid rgb(100, 181, 246);
     font-size: 40px;
     display: flex;
     justify-content: center;
@@ -33,29 +33,33 @@ body {
     padding-right: 25px;
     background-color: rgb(250, 250, 250); 
     font-weight: 700;
-    border: 2px solid rgb(26, 35, 126);
 }
 
 #equal {
-    grid-column: 1/5;
+    grid-column: 1/3;
     background-color: rgb(200, 230, 201);
-    color: black;
-    text-shadow: 1px 1px white;
 }
 
-#plus, #minus, #x, #divide {
-    background-color: rgb(191, 87, 97);
-    text-shadow: 1px 1px black;
+#clear {
+    grid-column: 3/5;
+    background-color: rgb(176, 190, 197);
+    color: white;
 }
 
 #cero, #one, #two, #three, #four, #five, #six, #seven, #eight, #nine {
     background-color: rgb(174, 214, 241);
-    text-shadow: 1px 1px black;
+}
+
+#sum, #subtract, #multiply, #divide {
+    background-color: rgb(191, 87, 97);
 }
 
 #dot, #back {
     background-color: rgb(176, 190, 197);
-    text-shadow: 1px 1px black;
+}
+
+#dot {
+    background-color: rgb(117, 117, 117);
 }
 
 .disable {
