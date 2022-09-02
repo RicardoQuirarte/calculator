@@ -1,12 +1,5 @@
 const screen = document.querySelector('#screen');
-const seven = document.querySelector('#seven');
-const eight = document.querySelector('#eight');
-const nine = document.querySelector('#nine');
-const plus = document.querySelector('#plus');
-const four = document.querySelector('#four');
-const five = document.querySelector('#five');
-const six = document.querySelector('#six');
-const minus = document.querySelector('#minus');
+
 
 cero.addEventListener('click', showNumber);
 one.addEventListener('click', showNumber);
@@ -20,31 +13,72 @@ eight.addEventListener('click', showNumber);
 nine.addEventListener('click', showNumber);
 back.addEventListener('click', backFunction);
 dot.addEventListener('click', dotDisable);
+divide.addEventListener('click', operate);
+multiply.addEventListener('click', operate);
+subtract.addEventListener('click', operate);
+sum.addEventListener('click', operate);
+
+equal.addEventListener('click', () => {
+    secondValue = parseFloat(displayValue);
+    value = calculate(value, operator, secondValue);
+    screen.textContent = value;
+    displayValue = '';
+    previousKey = 'equal';
+});
+
+clear.addEventListener('click', () => {
+    displayValue = '';
+    value = 0;
+    secondValue = 0;
+    clickOnce = 0;
+    screen.textContent = 0;
+});
 
 let displayValue = '';
 let operator = '';
 let clickOnce = 0;
 let previousKey= '';
 
-function calculate(n1, operator, n2) {
-let result = '';
-    if (operator === 'sum') {
-        result = n1 + n2;
-    } else if (operator === 'subtract') {
-        result = n1 - n2;
-    } else if (operator == 'multiply') {
-        result = n1 * n2;
-    } else if (operator == 'divide') {
-        result = n1 / n2;
+function operate (e) {
+    if (previousKey == 'operator' || previousKey == 'equal') {
+        operator = `${e.target.id}`;
+        return
     }
-    return result;
+    if (clickOnce == 0) {
+        value = parseFloat(displayValue);
+        operator = `${e.target.id}`;
+        clickOnce++
+    } else if (clickOnce > 0) {
+            secondValue = parseFloat(displayValue);
+            value = calculate(value, operator, secondValue);
+            screen.textContent = value;
+            operator = `${e.target.id}`;
+        }
+    displayValue = '';
+    previousKey = 'operator'
+}
+
+function calculate(n1, operator, n2) {
+    if (n2 == 0) {
+    return 'You can\'t divide by 0!'
+    } if (operator === 'sum') {
+        return n1 + n2;
+    } else if (operator === 'subtract') {
+        return n1 - n2;
+    } else if (operator == 'multiply') {
+        return n1 * n2;
+    } else if (operator == 'divide') {
+        return n1 / n2;
+    }
 };
 
 function showNumber(e) {
     displayValue = displayValue + `${e.target.innerText}`;
     screen.textContent = displayValue;
     previousKey = 'number';
-    console.log(displayValue)
+    if(displayValue.length > 19) {
+        displayValue = displayValue.substring(0,19);
+    }
 };
 
 function backFunction() {
@@ -60,110 +94,62 @@ function dotDisable(e) {
      showNumber(e);
 };
 
-function showKeyNumber(e) {
+
+addEventListener('keypress', keyboardSupport);
+
+function keyboardSupport(e) {
     if (e.key === 'Backspace') {
         backFunction();
         return
+    } else if (e.key >= 0 && e.key <= 9) {
+        displayValue = displayValue + `${e.key}`;
+        screen.textContent = displayValue;
+        previousKey = 'number';
+    } else if (['/', '*', '-', '+'].includes(e.key)) {
+        operateWithKey(e);
+    } else if (e.key == 'Enter') {
+        secondValue = parseFloat(displayValue);
+        value = calculateWithKey(value, operator, secondValue);
+        screen.textContent = value;
+        displayValue = '';
+        previousKey = 'equal';
+    } else if (e.key == '.') {
+        displayValue = displayValue + `${e.key}`;
+        screen.textContent = displayValue;
     }
-    displayValue = displayValue + `${e.key}`;
-    screen.textContent = displayValue;
-    console.log(displayValue)
 }
 
-addEventListener('keydown', (e) => {
-    showKeyNumber(e);
-});
+let keyOnce = 0;
 
-
-
-
-divide.addEventListener('click', () => {
+function operateWithKey (e) {
     if (previousKey == 'operator' || previousKey == 'equal') {
-        operator = 'divide';
+        operator = `${e.key}`;
         return
     }
-    clickOnce++
-    if (clickOnce == 1) {
+    if (keyOnce == 0) {
         value = parseFloat(displayValue);
-        operator = 'divide';
-    } else if (clickOnce > 1) {
+        operator = `${e.key}`;
+        keyOnce++
+    } else if (keyOnce > 0) {
             secondValue = parseFloat(displayValue);
-            value = calculate(value, operator, secondValue);
+            value = calculateWithKey(value, operator, secondValue);
             screen.textContent = value;
-            operator = 'divide';
+            operator = `${e.key}`;
         }
     displayValue = '';
     previousKey = 'operator'
-});
+}
 
-multiply.addEventListener('click', () => {
-    if (previousKey == 'operator' || previousKey == 'equal') {
-        operator = 'multiply';
-        return
+function calculateWithKey(n1, operator, n2) {
+    if (n2 == 0) {
+    return 'You can\'t divide by 0!'
+    } if (operator === '+') {
+        return n1 + n2;
+    } else if (operator === '-') {
+        return n1 - n2;
+    } else if (operator == '*') {
+        return n1 * n2;
+    } else if (operator == '/') {
+        return n1 / n2;
     }
-    clickOnce++
-    if (clickOnce == 1) {
-        value = parseFloat(displayValue);
-        operator = 'multiply';
-    } else if (clickOnce > 1) {
-            secondValue = parseFloat(displayValue);
-            value = calculate(value, operator, secondValue);
-            screen.textContent = value;
-            operator = 'multiply';
-        }
-    displayValue = '';
-    previousKey = 'operator'
-});
-
-subtract.addEventListener('click', () => {
-    if (previousKey == 'operator' || previousKey == 'equal') {
-        operator = 'subtract';
-        return
-    }
-    clickOnce++
-    if (clickOnce == 1) {
-        value = parseFloat(displayValue);
-        operator = 'subtract';
-    } else if (clickOnce > 1) {
-            secondValue = parseFloat(displayValue);
-            value = calculate(value, operator, secondValue);
-            screen.textContent = value;
-            operator = 'subtract';
-        }
-    displayValue = '';
-    previousKey = 'operator'
-});
-
-sum.addEventListener('click', () => {
-    if (previousKey == 'operator' || previousKey == 'equal') {
-        operator = 'sum';
-        return
-    }
-    clickOnce++
-    if (clickOnce == 1) {
-        value = parseFloat(displayValue);
-        operator = 'sum';
-    } else if (clickOnce > 1) {
-            secondValue = parseFloat(displayValue);
-            value = calculate(value, operator, secondValue);
-            screen.textContent = value;
-            operator = 'sum';
-        }
-    displayValue = '';
-    previousKey = 'operator'
-});
-
-equal.addEventListener('click', () => {
-    secondValue = parseFloat(displayValue);
-    value = calculate(value, operator, secondValue);
-    screen.textContent = value;
-    displayValue = '';
-    previousKey = 'equal';
-});
-
-clear.addEventListener('click', () => {
-    displayValue= '';
-    value= 0;
-    secondValue= 0;
-    screen.textContent = 0;
-});
+};
